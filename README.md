@@ -1,96 +1,114 @@
-# 📝 VSM Blog Platform
+# 🛠️ NestJS Prisma MySQL Starter Project
 
-Dự án nền tảng Blog đơn giản sử dụng **NestJS + Prisma + MySQL** cho backend và **HTML/CSS/JS** thuần cho frontend.
+Đây là một dự án backend sử dụng **NestJS**, **Prisma**, và **MySQL** với các chức năng sau:
+- ✅ Đăng ký, đăng nhập (JWT)
+- 🔐 Phân quyền `User` / `Admin`
+- 📝 CRUD bài viết
+- 👤 Cập nhật thông tin cá nhân
 
 ## 📋 Mục Lục
-- [Demo](#-demo)
 - [Công Nghệ Sử Dụng](#-công-nghệ-sử-dụng)
 - [Yêu Cầu Hệ Thống](#-yêu-cầu-hệ-thống)
-- [Cấu Trúc Backend](#-cấu-trúc-backend)
-- [Cài Đặt Backend với Prisma + MySQL](#-cài-đặt-backend-với-prisma--mysql)
-- [API Endpoints](#-api-endpoints)
-- [Frontend: GitHub Pages](#-frontend-github-pages)
-- [Gợi Ý Mở Rộng](#-gợi-ý-mở-rộng)
-- [Tác Giả](#-tác-giả)
+- [Cấu Trúc Thư Mục](#-cấu-trúc-thư-mục)
+- [Cài Đặt](#-cài-đặt)
+- [API Endpoint](#-api-endpoint)
+- [Test với Postman](#-test-với-postman)
+- [Tính Năng Nổi Bật](#-tính-năng-nổi-bật)
+- [Tài Liệu Tham Khảo](#-tài-liệu-tham-khảo)
+- [Dev Bởi](#-dev-bởi)
 - [Giấy Phép](#-giấy-phép)
 
-## 🚀 Demo
-- 🔗 Frontend: [https://<your-username>.github.io/vsm-blog-frontend](https://<your-username>.github.io/vsm-blog-frontend)
-- 🔗 Backend: [https://vsm-blog-api.onrender.com](https://vsm-blog-api.onrender.com)
-
-> 🛠️ Thay `<your-username>` bằng tên GitHub của bạn và `vsm-blog-api` bằng domain Render nếu khác.
-
-## 📦 Công Nghệ Sử Dụng
-
-### Backend (NestJS + Prisma)
-- **NestJS** - Framework Node.js mạnh mẽ, hỗ trợ mô-đun hóa.
-- **Prisma ORM** - Quản lý MySQL hiệu quả.
-- **JWT Auth** - Đăng nhập và phân quyền.
-- **Render.com** - Nền tảng deploy backend miễn phí.
-
-### Frontend (HTML/CSS/JS)
-- **HTML/CSS thuần** với hiệu ứng đẹp.
-- **Fetch API** - Gọi API backend.
-- **GitHub Pages** - Host trang tĩnh miễn phí.
+## 🚀 Công Nghệ Sử Dụng
+- [NestJS](https://nestjs.com/) - Framework Node.js hiện đại.
+- [Prisma ORM](https://www.prisma.io/) - Công cụ ORM mạnh mẽ cho Node.js.
+- [MySQL](https://www.mysql.com/) - Cơ sở dữ liệu quan hệ.
+- [Passport JWT](https://docs.nestjs.com/security/authentication) - Xác thực JWT.
 
 ## 🖥️ Yêu Cầu Hệ Thống
 - Node.js (phiên bản 16 hoặc cao hơn)
-- MySQL server (đã cài đặt và chạy, ví dụ: XAMPP)
+- MySQL server (đã cài đặt và chạy)
 - npm (Node Package Manager)
-- Git (để clone và push code)
 - phpMyAdmin (tùy chọn, để quản lý cơ sở dữ liệu)
 
-## 🧩 Cấu Trúc Backend
+## 📁 Cấu Trúc Thư Mục
 ```
 src/
-├── auth/                # Xử lý đăng ký, đăng nhập, bảo vệ route
-├── users/               # Quản lý thông tin người dùng
-├── posts/               # CRUD bài viết
-├── common/              # Decorator, guard, helper tái sử dụng
-├── main.ts              # Điểm khởi chạy
-└── app.module.ts        # Nơi khai báo các module
+├── auth/                # Module xác thực & phân quyền
+│   ├── auth.controller.ts
+│   ├── auth.service.ts
+│   ├── jwt.strategy.ts
+│   ├── roles.decorator.ts
+│   └── roles.guard.ts
+├── users/               # Quản lý người dùng
+│   ├── users.controller.ts
+│   ├── users.service.ts
+├── posts/               # Quản lý bài viết
+│   ├── posts.controller.ts
+│   ├── posts.service.ts
+├── app.module.ts        # Module gốc
+└── main.ts              # Điểm khởi chạy
 ```
 
-## 🛠️ Cài Đặt Backend với Prisma + MySQL
+## ⚙️ Cài Đặt
 
-### 1. Clone & Cài Đặt
+### 1. Clone Dự Án
 ```bash
-git clone https://github.com/<your-username>/vsm-blog-backend.git
-cd vsm-blog-backend
+git clone https://github.com/your-name/project-name.git
+cd project-name
+```
+
+### 2. Cài Đặt Thư Viện
+```bash
 npm install
 ```
 
-### 2. Cấu Hình Database
-Tạo file `.env`:
+### 3. Tạo File `.env`
+Tạo file `.env` trong thư mục gốc với nội dung sau:
 ```plaintext
-DATABASE_URL="mysql://<user>:<pass>@<host>:<port>/<db>?schema=public"
-JWT_SECRET="vsm-secret"
+DATABASE_URL="mysql://root:password@localhost:3306/nestjs-restfull"
+JWT_SECRET="your_jwt_secret"
 ```
-Ví dụ với XAMPP:
-```plaintext
-DATABASE_URL="mysql://root:@localhost:3306/vsm_blog"
-```
-📌 Đảm bảo bạn đã tạo cơ sở dữ liệu `vsm_blog` trong phpMyAdmin và thay `<user>`, `<pass>`, `<host>`, `<port>`, `<db>` bằng thông tin thực tế.
+📌 Đảm bảo bạn đã tạo sẵn cơ sở dữ liệu `nestjs-restfull` trong phpMyAdmin và thay `password` bằng mật khẩu MySQL của bạn.
 
-### 3. Khởi Tạo Prisma
+### 4. Khởi Tạo Prisma
+#### 1. Cấu Trúc `schema.prisma`
+```prisma
+model User {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  name     String
+  password String
+  role     Role    @default(USER)
+  posts    Post[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  authorId  Int
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+```
+
+#### 2. Chạy Migrate và Generate Prisma Client
 ```bash
-npx prisma init        # Nếu chưa có thư mục Prisma
 npx prisma migrate dev --name init
 npx prisma generate
 ```
 
-### 4. Seed Data Người Dùng
-```bash
-npx ts-node prisma/seed.ts
-```
-
-### 5. Chạy Server
+### 5. Chạy Ứng Dụng
 ```bash
 npm run start:dev
 ```
-API sẽ chạy tại: `http://localhost:3000`
 
-## 🧪 API Endpoints
+## 📮 API Endpoint
 
 ### Auth
 | Method | Endpoint       | Chức năng       |
@@ -99,59 +117,44 @@ API sẽ chạy tại: `http://localhost:3000`
 | POST   | /auth/login    | Đăng nhập       |
 
 ### Users
-| Method | Endpoint    | Chức năng             |
-|--------|-------------|-----------------------|
-| GET    | /users/me   | Thông tin cá nhân (Bearer Token) |
+| Method | Endpoint         | Chức năng             |
+|--------|------------------|-----------------------|
+| GET    | /users/me        | Lấy thông tin cá nhân |
+| PUT    | /users/me        | Cập nhật tên          |
+| GET    | /users/admin-only| Truy cập chỉ Admin    |
 
 ### Posts
-| Method | Endpoint     | Chức năng             |
-|--------|--------------|-----------------------|
-| GET    | /posts       | Lấy tất cả bài viết  |
-| POST   | /posts       | Tạo bài viết mới     |
-| PUT    | /posts/:id   | Chỉnh sửa bài viết   |
-| DELETE | /posts/:id   | Xóa bài viết         |
+| Method | Endpoint       | Chức năng             |
+|--------|----------------|-----------------------|
+| GET    | /posts          | Danh sách bài viết    |
+| GET    | /posts/:id      | Chi tiết bài viết     |
+| POST   | /posts          | Tạo bài viết          |
+| PUT    | /posts/:id      | Sửa bài viết          |
+| DELETE | /posts/:id      | Xóa bài viết          |
 
-🌐 Các API yêu cầu xác thực cần header: `Authorization: Bearer <token>`.
+📌 Các API yêu cầu xác thực cần header: `Authorization: Bearer <token>`.
 
-## 🌐 Frontend: GitHub Pages
+## 🧪 Test với Postman
+1. Đăng ký và đăng nhập để lấy `access_token`.
+2. Thêm header:
+   ```
+   Authorization: Bearer <access_token>
+   ```
+3. Gọi các API `/users`, `/posts` để kiểm tra.
 
-### 1. Tạo Repo GitHub
-Ví dụ: `vsm-blog-frontend`
+## ✅ Tính Năng Nổi Bật
+- 🔐 Bảo mật JWT
+- 🧩 Phân quyền qua `@Roles()` và `RolesGuard`
+- 🛡️ Prisma chống SQL Injection
+- 💡 Tối ưu tổ chức code theo module
 
-### 2. Cấu Trúc Frontend
-```
-/
-├── index.html    # Trang chính
-└── assets/       # (nếu có) chứa ảnh, script, css bổ sung
-```
+## 📚 Tài Liệu Tham Khảo
+- [Tài liệu NestJS](https://docs.nestjs.com/)
+- [Tài liệu Prisma](https://www.prisma.io/docs/)
+- [JWT Auth in NestJS](https://docs.nestjs.com/security/authentication)
 
-### 3. Push Lên GitHub
-```bash
-git init
-git add .
-git commit -m "Deploy frontend"
-git branch -M main
-git remote add origin https://github.com/<your-username>/vsm-blog-frontend.git
-git push -u origin main
-```
-
-### 4. Kích Hoạt GitHub Pages
-- Vào repo → **Settings** → **Pages**
-- **Source**: Chọn `main branch` → `/root`
-- Link sẽ hiển thị sau vài phút tại:
-  ```
-  https://<your-username>.github.io/vsm-blog-frontend
-  ```
-
-## 🧠 Gợi Ý Mở Rộng
-- Thêm avatar người dùng.
-- Upload ảnh bài viết (sử dụng Cloudinary).
-- Tìm kiếm, phân trang bài viết.
-- Dashboard admin.
-
-## 🧑‍💻 Tác Giả
-- 📛 Nguyen Dung
-- 💼 Dự án học tập: NestJS + Prisma + MySQL + GitHub Pages
+## 💻 Dev Bởi
+Nguyen Dung – Vietnam Student Marathon
 
 ## 📜 Giấy Phép
 Dự án này được cấp phép theo Giấy phép MIT. Xem chi tiết trong file [LICENSE](LICENSE).
